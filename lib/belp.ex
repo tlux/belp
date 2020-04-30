@@ -6,12 +6,6 @@ defmodule Belp do
   alias Belp.{AST, InvalidCharError, SyntaxError, UndefinedVariableError}
 
   @typedoc """
-  A type that is a union of all error types.
-  """
-  @type error ::
-          InvalidCharError.t() | SyntaxError.t() | UndefinedVariableError.t()
-
-  @typedoc """
   A type that describes which primitives can be used as expression.
   """
   @type expr :: String.t() | charlist
@@ -23,7 +17,10 @@ defmodule Belp do
           expr,
           Keyword.t(as_boolean(any))
           | %{optional(atom | String.t()) => as_boolean(any)}
-        ) :: {:ok, boolean} | {:error, any}
+        ) ::
+          {:ok, boolean}
+          | {:error,
+             InvalidCharError.t() | SyntaxError.t() | UndefinedVariableError.t()}
   def eval(expr, vars \\ %{}) do
     with {:ok, _tokens, ast} <- parse(expr) do
       AST.eval(ast, sanitize_vars(vars))
@@ -57,7 +54,9 @@ defmodule Belp do
   @doc """
   Gets a list of variable names that are present in the given expression.
   """
-  @spec variables(expr) :: {:ok, [String.t()]} | {:error, InvalidCharError.t()}
+  @spec variables(expr) ::
+          {:ok, [String.t()]}
+          | {:error, InvalidCharError.t() | SyntaxError.t()}
   def variables(expr) do
     with {:ok, tokens, _ast} <- parse(expr) do
       vars =
