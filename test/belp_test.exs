@@ -19,6 +19,12 @@ defmodule BelpTest do
       assert Belp.eval("not false") == {:ok, true}
       assert Belp.eval("not (false or true)") == {:ok, false}
       assert Belp.eval("not false or true") == {:ok, true}
+      assert Belp.eval("true = false") == {:ok, false}
+      assert Belp.eval("true = true") == {:ok, true}
+      assert Belp.eval("false = false") == {:ok, true}
+      assert Belp.eval("true != false") == {:ok, true}
+      assert Belp.eval("true != true") == {:ok, false}
+      assert Belp.eval("false != false") == {:ok, false}
     end
 
     test "undefined variable error" do
@@ -77,6 +83,24 @@ defmodule BelpTest do
 
       assert Belp.eval("not foo or bar", %{"foo" => false, "bar" => true}) ==
                {:ok, true}
+
+      assert Belp.eval("foo = bar", %{"foo" => true, "bar" => false}) ==
+               {:ok, false}
+
+      assert Belp.eval("foo = bar", %{"foo" => true, "bar" => true}) ==
+               {:ok, true}
+
+      assert Belp.eval("foo = bar", %{"foo" => false, "bar" => false}) ==
+               {:ok, true}
+
+      assert Belp.eval("foo != bar", %{"foo" => true, "bar" => false}) ==
+               {:ok, true}
+
+      assert Belp.eval("foo != bar", %{"foo" => true, "bar" => true}) ==
+               {:ok, false}
+
+      assert Belp.eval("foo != bar", %{"foo" => false, "bar" => false}) ==
+               {:ok, false}
     end
 
     test "undefined variable error" do
@@ -120,6 +144,12 @@ defmodule BelpTest do
       assert Belp.eval!("not false") == true
       assert Belp.eval!("not (false or true)") == false
       assert Belp.eval!("not false or true") == true
+      assert Belp.eval!("true = false") == false
+      assert Belp.eval!("true = true") == true
+      assert Belp.eval!("false = false") == true
+      assert Belp.eval!("true != false") == true
+      assert Belp.eval!("true != true") == false
+      assert Belp.eval!("false != false") == false
     end
 
     test "undefined variable error" do
@@ -184,6 +214,15 @@ defmodule BelpTest do
 
       assert Belp.eval!("not foo or bar", %{"foo" => false, "bar" => true}) ==
                true
+
+      assert Belp.eval!("foo = bar", %{"foo" => true, "bar" => false}) == false
+      assert Belp.eval!("foo = bar", %{"foo" => true, "bar" => true}) == true
+      assert Belp.eval!("foo = bar", %{"foo" => false, "bar" => false}) == true
+      assert Belp.eval!("foo != bar", %{"foo" => true, "bar" => false}) == true
+      assert Belp.eval!("foo != bar", %{"foo" => true, "bar" => true}) == false
+
+      assert Belp.eval!("foo != bar", %{"foo" => false, "bar" => false}) ==
+               false
     end
 
     test "undefined variable error" do
