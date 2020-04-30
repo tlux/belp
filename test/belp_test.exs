@@ -48,8 +48,11 @@ defmodule BelpTest do
 
   describe "eval/2" do
     test "evaluate expression" do
+      assert Belp.eval("true", []) == {:ok, true}
       assert Belp.eval("true", %{}) == {:ok, true}
       assert Belp.eval("false", %{}) == {:ok, false}
+      assert Belp.eval("foo", foo: true) == {:ok, true}
+      assert Belp.eval("foo", %{foo: true}) == {:ok, true}
       assert Belp.eval("foo", %{"foo" => true}) == {:ok, true}
       assert Belp.eval("foo", %{"foo" => ""}) == {:ok, true}
       assert Belp.eval("foo", %{"foo" => 0}) == {:ok, true}
@@ -152,8 +155,11 @@ defmodule BelpTest do
 
   describe "eval!/2" do
     test "evaluate expression" do
+      assert Belp.eval!("true", []) == true
       assert Belp.eval!("true", %{}) == true
       assert Belp.eval!("false", %{}) == false
+      assert Belp.eval!("foo", foo: true) == true
+      assert Belp.eval!("foo", %{foo: true}) == true
       assert Belp.eval!("foo", %{"foo" => true}) == true
       assert Belp.eval!("foo", %{"foo" => ""}) == true
       assert Belp.eval!("foo", %{"foo" => 0}) == true
