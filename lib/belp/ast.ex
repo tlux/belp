@@ -1,7 +1,7 @@
 defmodule Belp.AST do
   @moduledoc false
 
-  alias Belp.UndefinedVarError
+  alias Belp.UndefinedVariableError
 
   def eval({:binary_expr, type, a, b}, vars) do
     with {:ok, a} <- eval(a, vars),
@@ -19,11 +19,11 @@ defmodule Belp.AST do
   def eval({:var, var}, vars) do
     case Map.fetch(vars, var) do
       {:ok, value} -> {:ok, value}
-      :error -> {:error, %UndefinedVarError{var: var}}
+      :error -> {:error, %UndefinedVariableError{var: var}}
     end
   end
 
-  def eval(a, _vars), do: {:ok, a}
+  def eval(value, _vars), do: {:ok, value}
 
   defp binary_expr({:eq_op, :=}, a, b), do: a == b
   defp binary_expr({:eq_op, :!=}, a, b), do: a != b

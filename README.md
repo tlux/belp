@@ -15,6 +15,10 @@ def deps do
 end
 ```
 
+## Usage
+
+TBD
+
 ## Docs
 
 Documentation can be generated with
