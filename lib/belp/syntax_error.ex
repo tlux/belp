@@ -12,7 +12,7 @@ defmodule Belp.SyntaxError do
         }
 
   def message(exception) do
-    "Syntax error on line #{exception.line} near token " <>
-      inspect(exception.token)
+    "Syntax error near token #{inspect(exception.token)} " <>
+      "on line #{exception.line}"
   end
 end

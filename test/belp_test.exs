@@ -1,5 +1,5 @@
 defmodule BelpTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   alias Belp.{InvalidCharError, SyntaxError, UndefinedVariableError}
 

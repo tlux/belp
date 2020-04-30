@@ -1,0 +1,9 @@
+{
+  "skip_files": [
+    "src/belp_lexer.erl",
+    "src/belp_parser.erl"
+  ],
+  "terminal_options": {
+    "file_column_width": 40
+  }
+}
