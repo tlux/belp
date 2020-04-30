@@ -1,5 +1,9 @@
 # Belp
 
+[![Build Status](https://travis-ci.org/tlux/belp.svg?branch=master)](https://travis-ci.org/tlux/belp)
+[![Coverage Status](https://coveralls.io/repos/github/tlux/belp/badge.svg?branch=master)](https://coveralls.io/github/tlux/belp?branch=master)
+[![Hex.pm](https://img.shields.io/hexpm/v/belp.svg)](https://hex.pm/packages/belp)
+
 A simple *B*oolean *E*xpression *L*exer and *P*arser
 
 ## Installation
