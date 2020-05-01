@@ -142,8 +142,8 @@ defmodule BelpTest do
       assert Belp.eval!("false or false") == false
       assert Belp.eval!("(true and false) or true") == true
       assert Belp.eval!("(true and false) or false") == false
-      assert Belp.eval("false and false or true") == {:ok, true}
-      assert Belp.eval("false and (false or true)") == {:ok, false}
+      assert Belp.eval!("false and false or true") == true
+      assert Belp.eval!("false and (false or true)") == false
       assert Belp.eval!("!true") == false
       assert Belp.eval!("not true") == false
       assert Belp.eval!("!false") == true
