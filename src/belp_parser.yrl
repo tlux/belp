@@ -18,6 +18,8 @@ expression -> '(' expression ')' : '$2'.
 
 predicate -> bool eq_op bool : {binary_expr, extract('$2'), '$1', '$3'}.
 predicate -> scalar_exp eq_op scalar_exp : {binary_expr, extract('$2'), '$1', '$3'}.
+predicate -> scalar_exp eq_op bool : {binary_expr, extract('$2'), '$1', '$3'}.
+predicate -> bool eq_op scalar_exp : {binary_expr, extract('$2'), '$1', '$3'}.
 
 scalar_exp -> element : '$1'.
 

@@ -105,6 +105,15 @@ defmodule BelpTest do
 
       assert Belp.eval("foo != bar", %{"foo" => false, "bar" => false}) ==
                {:ok, false}
+
+      assert Belp.eval("foo = true", %{"foo" => true}) == {:ok, true}
+      assert Belp.eval("true = foo", %{"foo" => true}) == {:ok, true}
+      assert Belp.eval("foo = true", %{"foo" => false}) == {:ok, false}
+      assert Belp.eval("true = foo", %{"foo" => false}) == {:ok, false}
+      assert Belp.eval("foo = false", %{"foo" => false}) == {:ok, true}
+      assert Belp.eval("false = foo", %{"foo" => false}) == {:ok, true}
+      assert Belp.eval("foo = false", %{"foo" => true}) == {:ok, false}
+      assert Belp.eval("false = foo", %{"foo" => true}) == {:ok, false}
     end
 
     test "undefined variable error" do
@@ -229,6 +238,15 @@ defmodule BelpTest do
 
       assert Belp.eval!("foo != bar", %{"foo" => false, "bar" => false}) ==
                false
+
+      assert Belp.eval!("foo = true", %{"foo" => true}) == true
+      assert Belp.eval!("true = foo", %{"foo" => true}) == true
+      assert Belp.eval!("foo = true", %{"foo" => false}) == false
+      assert Belp.eval!("true = foo", %{"foo" => false}) == false
+      assert Belp.eval!("foo = false", %{"foo" => false}) == true
+      assert Belp.eval!("false = foo", %{"foo" => false}) == true
+      assert Belp.eval!("foo = false", %{"foo" => true}) == false
+      assert Belp.eval!("false = foo", %{"foo" => true}) == false
     end
 
     test "undefined variable error" do
