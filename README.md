@@ -14,7 +14,7 @@ The package can be installed by adding `belp` to your list of dependencies in
 ```elixir
 def deps do
   [
-    {:belp, "~> 0.1"}
+    {:belp, "~> 0.2"}
   ]
 end
 ```
