@@ -3,8 +3,8 @@ Nonterminals expression predicate scalar_exp element bool.
 Terminals var and_op or_op not_op eq_op '(' ')' true false.
 
 Rootsymbol expression.
-Left 100 and_op.
-Left 200 or_op.
+Left 100 or_op.
+Left 200 and_op.
 Left 300 eq_op.
 Nonassoc 400 not_op.
 
