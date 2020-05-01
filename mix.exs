@@ -16,7 +16,17 @@ defmodule Belp.MixProject do
         "coveralls.html": :test,
         "coveralls.travis": :test
       ],
-      dialyzer: [plt_add_apps: [:ex_unit, :mix]]
+      dialyzer: [plt_add_apps: [:ex_unit, :mix]],
+      description: description(),
+      package: package(),
+
+      # Docs
+      name: "Belp",
+      source_url: "https://github.com/tlux/belp",
+      docs: [
+        main: "readme",
+        extras: ["README.md"]
+      ]
     ]
   end
 
@@ -34,6 +44,19 @@ defmodule Belp.MixProject do
       {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
       {:excoveralls, "~> 0.12", only: :test},
       {:ex_doc, "~> 0.21", only: :dev}
+    ]
+  end
+
+  defp description do
+    "A simple Boolean Expression Lexer and Parser."
+  end
+
+  defp package do
+    [
+      licenses: ["MIT"],
+      links: %{
+        "GitHub" => "https://github.com/tlux/belp"
+      }
     ]
   end
 end
