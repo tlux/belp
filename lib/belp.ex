@@ -12,6 +12,23 @@ defmodule Belp do
 
   @doc """
   Evaluates the given expression.
+
+  ## Examples
+
+      iex> Belp.eval("foo and bar", foo: true, bar: false)
+      {:ok, false}
+
+      iex> Belp.eval("foo or bar", %{"foo" => true, "bar" => false})
+      {:ok, true}
+
+      iex> Belp.eval("bar", %{foo: true})
+      {:error, %Belp.UndefinedVariableError{var: "bar"}}
+
+      iex> Belp.eval("invalid expression")
+      {:error, %Belp.SyntaxError{line: 1, token: "expression"}}
+
+      iex> Belp.eval("foo || bar")
+      {:error, %Belp.InvalidCharError{char: "|", line: 1}}
   """
   @spec eval(
           expr,
@@ -30,6 +47,23 @@ defmodule Belp do
   @doc """
   Evaluates the given expression. Raises when the expression is invalid or
   variables are undefined.
+
+  ## Examples
+
+      iex> Belp.eval!("foo and bar", foo: true, bar: false)
+      false
+
+      iex> Belp.eval!("foo or bar", %{"foo" => true, "bar" => false})
+      true
+
+      iex> Belp.eval!("bar", %{foo: true})
+      ** (Belp.UndefinedVariableError) Undefined variable: bar
+
+      iex> Belp.eval!("invalid expression")
+      ** (Belp.SyntaxError) Syntax error near token "expression" on line 1
+
+      iex> Belp.eval!("foo || bar")
+      ** (Belp.InvalidCharError) Invalid character "|" on line 1
   """
   @spec eval!(
           expr,
@@ -42,14 +76,57 @@ defmodule Belp do
 
   @doc """
   Checks whether the given expression is valid.
+
+  ## Examples
+
+      iex> Belp.valid_expression?("foo and bar")
+      true
+
+      iex> Belp.valid_expression?("invalid expression")
+      false
+
+      iex> Belp.valid_expression?("foo || bar")
+      false
   """
   @spec valid_expression?(expr) :: boolean
   def valid_expression?(expr) do
-    match?({:ok, _, _}, parse(expr))
+    validate(expr) == :ok
+  end
+
+  @doc """
+  Validates the given expression, returning an error tuple in case the
+  expression is invalid.
+
+  ## Examples
+
+      iex> Belp.validate("foo and bar")
+      :ok
+
+      iex> Belp.validate("invalid expression")
+      {:error, %Belp.SyntaxError{line: 1, token: "expression"}}
+
+      iex> Belp.validate("foo || bar")
+      {:error, %Belp.InvalidCharError{char: "|", line: 1}}
+  """
+  @doc since: "0.2.0"
+  @spec validate(expr) :: :ok | {:error, InvalidCharError.t() | SyntaxError.t()}
+  def validate(expr) do
+    with {:ok, _tokens, _ast} <- parse(expr), do: :ok
   end
 
   @doc """
   Gets a list of variable names that are present in the given expression.
+
+  ## Examples
+
+      iex> Belp.variables("(foo and bar) or !foo")
+      {:ok, ["foo", "bar"]}
+
+      iex> Belp.variables("invalid expression")
+      {:error, %Belp.SyntaxError{line: 1, token: "expression"}}
+
+      iex> Belp.variables("foo || bar")
+      {:error, %Belp.InvalidCharError{char: "|", line: 1}}
   """
   @spec variables(expr) ::
           {:ok, [String.t()]}
@@ -70,6 +147,17 @@ defmodule Belp do
   @doc """
   Gets a list of variable names that are present in the given expression. Raises
   when the expression is invalid or variables are undefined.
+
+  ## Examples
+
+      iex> Belp.variables!("(foo and bar) or !foo")
+      ["foo", "bar"]
+
+      iex> Belp.variables!("invalid expression")
+      ** (Belp.SyntaxError) Syntax error near token "expression" on line 1
+
+      iex> Belp.variables!("foo || bar")
+      ** (Belp.InvalidCharError) Invalid character "|" on line 1
   """
   @spec variables!(expr) :: [String.t()] | no_return
   def variables!(expr) do

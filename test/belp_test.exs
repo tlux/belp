@@ -3,6 +3,8 @@ defmodule BelpTest do
 
   alias Belp.{InvalidCharError, SyntaxError, UndefinedVariableError}
 
+  doctest Belp
+
   describe "eval/1" do
     test "evaluate expression" do
       assert Belp.eval("true") == {:ok, true}
@@ -253,6 +255,22 @@ defmodule BelpTest do
       assert_raise SyntaxError, fn ->
         Belp.eval!("\n\nfoo bar")
       end
+    end
+  end
+
+  describe "validate/1" do
+    test "ok when expression is valid" do
+      assert Belp.validate("foo and bar") == :ok
+    end
+
+    test "error when invalid character error" do
+      assert Belp.validate("foo && bar") ==
+               {:error, %InvalidCharError{char: "&", line: 1}}
+    end
+
+    test "error when syntax error" do
+      assert Belp.validate("foo bar") ==
+               {:error, %SyntaxError{line: 1, token: "bar"}}
     end
   end
 
