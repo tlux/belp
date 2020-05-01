@@ -22,20 +22,16 @@ end
 ## Usage
 
 ```elixir
-iex> Belp.eval("foo and bar", foo: true, bar: false)
-{:ok, true}
-
 iex> Belp.eval!(
 ...>   "(foo or bar) and not baz",
-...>   %{"foo" => false, "bar" => true, "baz" => true}
+...>   %{"foo" => false, "bar" => true, "baz" => false}
 ...> )
-false
+true
+```
 
-iex> Belp.variables("foo or bar")
-{:ok, ["foo", "bar"]}
-
-iex> Belp.variables!("foo or bar")
-["foo", "bar"]
+```elixir
+iex> Belp.eval!("invalid expression")
+** (Belp.SyntaxError) Syntax error near token "expression" on line 1
 ```
 
 See [HexDocs](https://hexdocs.pm/belp) for the full API.
