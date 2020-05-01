@@ -292,4 +292,23 @@ defmodule BelpTest do
                {:error, %SyntaxError{token: "bar", line: 3}}
     end
   end
+
+  describe "variables!/1" do
+    test "get vars for valid expression" do
+      assert Belp.variables!("(foo and bar) or (not bar and baz)") ==
+               ~w(foo bar baz)
+    end
+
+    test "invalid character error" do
+      assert_raise InvalidCharError, fn ->
+        Belp.variables!("foo && bar")
+      end
+    end
+
+    test "syntax error" do
+      assert_raise SyntaxError, fn ->
+        Belp.variables!("foo Or bar")
+      end
+    end
+  end
 end

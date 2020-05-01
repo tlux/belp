@@ -37,10 +37,7 @@ defmodule Belp do
           | %{optional(atom | String.t()) => as_boolean(any)}
         ) :: boolean | no_return
   def eval!(expr, vars \\ %{}) do
-    case eval(expr, vars) do
-      {:ok, value} -> value
-      {:error, error} -> raise error
-    end
+    expr |> eval(vars) |> may_bang!()
   end
 
   @doc """
@@ -70,6 +67,15 @@ defmodule Belp do
     end
   end
 
+  @doc """
+  Gets a list of variable names that are present in the given expression. Raises
+  when the expression is invalid or variables are undefined.
+  """
+  @spec variables!(expr) :: [String.t()] | no_return
+  def variables!(expr) do
+    expr |> variables() |> may_bang!()
+  end
+
   defp lex(expr) do
     case :belp_lexer.string(to_charlist(expr)) do
       {:ok, tokens, _lines} ->
@@ -79,6 +85,9 @@ defmodule Belp do
         {:error, %InvalidCharError{char: to_string(char), line: line}}
     end
   end
+
+  defp may_bang!({:ok, value}), do: value
+  defp may_bang!({:error, error}), do: raise(error)
 
   defp parse(expr) do
     with {:ok, tokens} <- lex(expr),
