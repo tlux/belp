@@ -1,6 +1,8 @@
 defmodule Belp.MixProject do
   use Mix.Project
 
+  @github_url "https://github.com/tlux/belp"
+
   def project do
     [
       app: :belp,
@@ -23,7 +25,7 @@ defmodule Belp.MixProject do
 
       # Docs
       name: "Belp",
-      source_url: "https://github.com/tlux/belp",
+      source_url: @github_url,
       docs: [
         main: "readme",
         extras: ["README.md"]
@@ -41,10 +43,11 @@ defmodule Belp.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
-      {:excoveralls, "~> 0.12", only: :test},
-      {:ex_doc, "~> 0.21", only: :dev}
+      {:castore, "~> 1.0", only: :test, runtime: false},
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
+      {:excoveralls, "~> 0.18", only: :test},
+      {:ex_doc, "~> 0.31", only: :dev}
     ]
   end
 
@@ -56,7 +59,7 @@ defmodule Belp.MixProject do
     [
       licenses: ["MIT"],
       links: %{
-        "GitHub" => "https://github.com/tlux/belp"
+        "GitHub" => @github_url
       }
     ]
   end
