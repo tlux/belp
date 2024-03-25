@@ -47,7 +47,8 @@ defmodule Belp.MixProject do
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:excoveralls, "~> 0.18", only: :test},
-      {:ex_doc, "~> 0.31", only: :dev}
+      {:ex_doc, "~> 0.31", only: :dev},
+      {:mix_audit, "~> 2.1", only: [:dev, :test]}
     ]
   end
 
